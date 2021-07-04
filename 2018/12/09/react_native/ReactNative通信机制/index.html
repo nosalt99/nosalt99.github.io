@@ -18,7 +18,7 @@
   <meta name="author" content="不咸">
   <meta name="keywords" content="">
   
-  <title>一点点都不咸</title>
+  <title>ReactNative-Java与JavaScript之间的通信 - 一点点都不咸</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="">
+            <span class="h2" id="subtitle" title="ReactNative-Java与JavaScript之间的通信">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-04 14:43" pubdate>
-        2021年7月4日 下午
+      <time datetime="2018-12-09 09:30" pubdate>
+        2018年12月9日 上午
       </time>
     </span>
   
@@ -225,7 +225,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">ReactNative-Java与JavaScript之间的通信</h1>
             
             <div class="markdown-body">
               <h1 id="ReactNative-Java与JavaScript之间的通信"><a href="#ReactNative-Java与JavaScript之间的通信" class="headerlink" title="ReactNative-Java与JavaScript之间的通信"></a>ReactNative-Java与JavaScript之间的通信</h1><h2 id="几个重要的类"><a href="#几个重要的类" class="headerlink" title="几个重要的类"></a>几个重要的类</h2><ul>
@@ -247,7 +247,7 @@
 </li>
 </ul>
 <h2 id="Java调用JavaScript"><a href="#Java调用JavaScript" class="headerlink" title="Java调用JavaScript"></a>Java调用JavaScript</h2><p><img src="https://cdn.nlark.com/yuque/0/2018/png/199077/1543751641173-8a70a3ba-ff6e-41af-bbfc-3bc04fc848d2.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<figure class="highlight arduino"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs arduino"><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">JSCExecutor::callFunction</span><span class="hljs-params">(<span class="hljs-keyword">const</span> std::string&amp; moduleId, <span class="hljs-keyword">const</span> std::string&amp; methodId, <span class="hljs-keyword">const</span> folly::dynamic&amp; arguments)</span> </span>&#123;<br>  ......<br>  <span class="hljs-keyword">auto</span> result = [&amp;] &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">//m_callFunctionReturnFlushedQueueJS来自于JSCExecutor::bindBridge()方法中初始化，JSCExecutor::bindBridge()是在前面分析启动流程时被调用的，实质是负责通过 Webkit JSC 拿到 JS 端代码的相关对象和方法引用，譬如拿到 JS 端 BatchedBridge.js 的 __fbBatchedBridge 属性与 MessageQueue.js 的 callFunctionReturnFlushedQueue 方法引用。此处实质为调用 MessageQueue.js 的 callFunctionReturnFlushedQueue 方法。</span><br>      <span class="hljs-keyword">return</span> m_callFunctionReturnFlushedQueueJS-&gt;<span class="hljs-built_in">callAsFunction</span>(&#123;<br>        <span class="hljs-built_in">Value</span>(m_context, <span class="hljs-keyword">String</span>::<span class="hljs-built_in">createExpectingAscii</span>(moduleId)),<br>        <span class="hljs-built_in">Value</span>(m_context, <span class="hljs-keyword">String</span>::<span class="hljs-built_in">createExpectingAscii</span>(methodId)),<br>        Value::<span class="hljs-built_in">fromDynamic</span>(m_context, std::<span class="hljs-built_in">move</span>(arguments))<br>      &#125;);<br>    &#125; <span class="hljs-built_in"><span class="hljs-keyword">catch</span></span> (...) &#123;<br>      std::<span class="hljs-built_in">throw_with_nested</span>(<br>        std::<span class="hljs-built_in">runtime_error</span>(<span class="hljs-string">&quot;Error calling function: &quot;</span> + moduleId + <span class="hljs-string">&quot;:&quot;</span> + methodId));<br>    &#125;<br>  &#125;();<br>    <span class="hljs-comment">//调用 native 模块，暂时忽略，下一小节解释，这里重点关注 Java 调用 JS 通信</span><br>  <span class="hljs-built_in">callNativeModules</span>(std::<span class="hljs-built_in">move</span>(result));<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">JSCExecutor::callFunction</span><span class="hljs-params">(<span class="hljs-keyword">const</span> std::string&amp; moduleId, <span class="hljs-keyword">const</span> std::string&amp; methodId, <span class="hljs-keyword">const</span> folly::dynamic&amp; arguments)</span> </span>&#123;<br>  ......<br>  <span class="hljs-keyword">auto</span> result = [&amp;] &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">//m_callFunctionReturnFlushedQueueJS来自于JSCExecutor::bindBridge()方法中初始化，JSCExecutor::bindBridge()是在前面分析启动流程时被调用的，实质是负责通过 Webkit JSC 拿到 JS 端代码的相关对象和方法引用，譬如拿到 JS 端 BatchedBridge.js 的 __fbBatchedBridge 属性与 MessageQueue.js 的 callFunctionReturnFlushedQueue 方法引用。此处实质为调用 MessageQueue.js 的 callFunctionReturnFlushedQueue 方法。</span><br>      <span class="hljs-keyword">return</span> m_callFunctionReturnFlushedQueueJS-&gt;<span class="hljs-built_in">callAsFunction</span>(&#123;<br>        <span class="hljs-built_in">Value</span>(m_context, String::<span class="hljs-built_in">createExpectingAscii</span>(moduleId)),<br>        <span class="hljs-built_in">Value</span>(m_context, String::<span class="hljs-built_in">createExpectingAscii</span>(methodId)),<br>        Value::<span class="hljs-built_in">fromDynamic</span>(m_context, std::<span class="hljs-built_in">move</span>(arguments))<br>      &#125;);<br>    &#125; <span class="hljs-built_in"><span class="hljs-keyword">catch</span></span> (...) &#123;<br>      std::<span class="hljs-built_in">throw_with_nested</span>(<br>        std::<span class="hljs-built_in">runtime_error</span>(<span class="hljs-string">&quot;Error calling function: &quot;</span> + moduleId + <span class="hljs-string">&quot;:&quot;</span> + methodId));<br>    &#125;<br>  &#125;();<br>    <span class="hljs-comment">//调用 native 模块，暂时忽略，下一小节解释，这里重点关注 Java 调用 JS 通信</span><br>  <span class="hljs-built_in">callNativeModules</span>(std::<span class="hljs-built_in">move</span>(result));<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 
 
@@ -261,6 +261,13 @@
             <hr>
             <div>
               <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/React-Native/">React Native</a>
+                    
+                  </div>
                 
                 
               </div>
@@ -276,12 +283,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2019/11/02/block_chain/%E4%BB%80%E4%B9%88%E6%98%AF%E6%AF%94%E7%89%B9%E5%B8%81/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">什么是比特币</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/04/react_native/ReactNative%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2018/12/09/react_native/ReactNative%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">
+                        <span class="hidden-mobile">ReactNative-启动流程</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
